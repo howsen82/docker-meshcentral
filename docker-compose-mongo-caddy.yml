@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+  meshcentral:
+    container_name: meshcentral
+    image: ghcr.io/gurucomputing/meshcentral-docker:latest
+    environment:
+      - MONGODB_URL=mongodb://mongo:27017
+      - MONGODB_NAME=meshcentral
+      - DB_ENCRYPT_KEY=${DB_ENCRYPT_KEY}
+      - AGENT_PORT=8800
+      - CERT=mesh.mydomain.com
+    volumes:
+      - ./data/meshcentral-data:/meshcentral/meshcentral-data
+      - ./data/meshcentral-files:/meshcentral/meshcentral-files
+      - ./data/meshcentral-backup:/meshcentral/meshcentral-backup
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 8800:8800
+    networks:
+      - meshcentral-network
+      - reverseproxy-network
+    restart: unless-stopped
+
+  mongo:
+    container_name: mongodb
+    image: mongo:latest
+    hostname: mongo
+    volumes:
+      - ./data/db:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    # ports:
+    #   - 27017:27017
+    networks:
+      - meshcentral-network
+    restart: unless-stopped
+
+  proxy:
+    container_name: proxy
+    image: caddy:latest
+    volumes:
+      - caddy/Caddyfile:/usr/share/caddy/Caddyfile
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - reverseproxy-network
+    restart: unless-stopped
+
+networks:
+  meshcentral-network:
+  reverseproxy-network:

@@ -1,0 +1,37 @@
+{
+    "$schema": "http://info.meshcentral.com/downloads/meshcentral-config-schema.json",
+    "settings": {
+        "cert": "meshcentral.laptopwiki.eu",
+        "_WANonly": true,
+        "_LANonly": true,
+        "_sessionKey": "generate_password_here",
+        "port": 443,
+        "_aliasPort": 443,
+        "redirPort": 80,
+        "_redirAliasPort": 80,
+        "AgentPong": 300,
+        "TLSOffload": "nginx-proxy-manager",
+        "_ignoreAgentHashCheck": false,
+        "SelfUpdate": false,
+        "AllowFraming": "false",
+        "mongodb": "mongodb://mongodb:27017/mesh",
+        "mongodbcol": "mesh",
+        "WebRTC": "false"
+    },
+    "domains": {
+        "": {
+            "_title": "Mesh Central",
+            "_title2": "Mesh Central",
+            "_minify": true,
+            "NewAccounts": "false",
+            "_userNameIsEmail": true,
+            "certUrl": "https://meshcentral.laptopwiki.eu:443"
+        }
+    },
+    "_letsencrypt": {
+        "__comment__": "Requires NodeJS 8.x or better, Go to https://letsdebug.net/ first before>",
+        "_email": "myemail@mydomain.com",
+        "_names": "myserver.mydomain.com",
+        "production": false
+    }
+}

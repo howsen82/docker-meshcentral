@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+  meshcentral:
+    container_name: meshcentral
+    image: ghcr.io/gurucomputing/meshcentral-docker:latest
+    volumes:
+      - ./data/meshcentral-data:/meshcentral/meshcentral-data
+      - ./data/meshcentral-files:/meshcentral/meshcentral-files
+      - ./data/meshcentral-backup:/meshcentral/meshcentral-backup
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped

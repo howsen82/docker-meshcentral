@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  meshcentral:
+    container_name: meshcentral
+    image: ghcr.io/gurucomputing/meshcentral-docker:latest
+    environment:
+      - MONGODB_URL=mongodb://mongo:27017
+      - MONGODB_NAME=meshcentral
+      - DB_ENCRYPT_KEY=${DB_ENCRYPT_KEY}
+    volumes:
+      - ./data/meshcentral-data:/meshcentral/meshcentral-data
+      - ./data/meshcentral-files:/meshcentral/meshcentral-files
+      - ./data/meshcentral-backup:/meshcentral/meshcentral-backup
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - meshcentral-network
+    restart: unless-stopped
+
+  mongo:
+    container_name: mongodb
+    image: mongo:latest
+    hostname: mongo
+    volumes:
+      - ./data/db:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    # ports:
+    #   - 27017:27017
+    networks:
+      - meshcentral-network
+    restart: unless-stopped
+
+networks:
+  meshcentral-network:
